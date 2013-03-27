@@ -14,7 +14,8 @@ jlazear@pha.jhu.edu
 June 25, 2012
 """
 
-from HKEBinaryLibrary2 import HKEBinaryReader, Header, Data, HKEBinaryError
+from HKEBinaryLibrary import HKEBinaryReader, Header, Data, \
+                             HKEBinaryError
 from numpy import *
 
 
@@ -114,7 +115,7 @@ class HKEBinaryFile:
             return self.header._rdlist[identifier]
         elif isinstance(identifier, str):
             try:
-                identifier = hkef.header._rkeylist.index(identifier)
+                identifier = self.header._rkeylist.index(identifier)
                 return self.header._rdlist[identifier]
             except ValueError:
                 raise HKEBinaryError
