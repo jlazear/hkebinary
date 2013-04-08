@@ -20,6 +20,11 @@ Running
 should produce a plot of a superconducting transition. If it does not
 appear to be one, then something is not functioning correctly.
 
+Author
+======
+
 jlazear
+
 jlazear@gmail.com
+
 27 Mar, 2013

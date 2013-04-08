@@ -624,6 +624,19 @@ class HKEBitstreamError(HKEBinaryError):
     pass
 
 
+class HKEInvalidRegisterError(HKEBinaryError):
+    """
+    User tried to access an invalid register.
+    """
+    def __init__(self, rname):
+        self.rname = rname
+        self.msg = ("Invalid register specifier:"
+                    " {0}".format(self.rname))
+
+    def __str__(self):
+        return self.msg
+
+
 # def entrypoint():
 #     s = BitStream(filename='hke_20120323_000.dat')
 

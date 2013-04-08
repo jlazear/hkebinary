@@ -15,7 +15,7 @@ June 25, 2012
 """
 
 from HKEBinaryLibrary import HKEBinaryReader, Header, Data, \
-                             HKEBinaryError
+                             HKEBinaryError, HKEInvalidRegisterError
 from numpy import *
 
 
@@ -112,13 +112,16 @@ class HKEBinaryFile:
         identifier.
         """
         if isinstance(identifier, int):
-            return self.header._rdlist[identifier]
+            try:
+                return self.header._rdlist[identifier]
+            except IndexError:
+                raise HKEInvalidRegisterError(identifier)
         elif isinstance(identifier, str):
             try:
                 identifier = self.header._rkeylist.index(identifier)
                 return self.header._rdlist[identifier]
             except ValueError:
-                raise HKEBinaryError
+                raise HKEInvalidRegisterError(identifier)
 
     def get_register_name(self, identifier):
         """
@@ -235,8 +238,6 @@ data. Extracting raw data.".format(rname=rd.fullname)
         nsamples > 1 and reduces these multiple data points in the
         register to a single data point. It defaults to average.
         """
-        #WRITEME
-        #HERE
         listtypes = (list, tuple, ndarray)
         if isinstance(identifier, (int, str)):
             rd = self.get_register_description(identifier)
