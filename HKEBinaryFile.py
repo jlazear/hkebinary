@@ -84,7 +84,7 @@ class HKEBinaryFile:
         """
         if isinstance(identifier, int):
             return self._boarddict[self.boardlist[identifier]]
-        elif isinstance(identifier, str):
+        elif isinstance(identifier, (str, unicode)):
             return self._boarddict[identifier]
 
         if address is not None:
@@ -116,7 +116,7 @@ class HKEBinaryFile:
                 return self.header._rdlist[identifier]
             except IndexError:
                 raise HKEInvalidRegisterError(identifier)
-        elif isinstance(identifier, str):
+        elif isinstance(identifier, (str, unicode)):
             try:
                 identifier = self.header._rkeylist.index(identifier)
                 return self.header._rdlist[identifier]
@@ -129,7 +129,7 @@ class HKEBinaryFile:
         """
         if isinstance(identifier, int):
             return self.registerlist[identifier]
-        elif isinstance(identifier, str):
+        elif isinstance(identifier, (str, unicode)):
             if identifier in self.registerlist:
                 return identifier
             else:
@@ -239,7 +239,7 @@ data. Extracting raw data.".format(rname=rd.fullname)
         register to a single data point. It defaults to average.
         """
         listtypes = (list, tuple, ndarray)
-        if isinstance(identifier, (int, str)):
+        if isinstance(identifier, (int, str, unicode)):
             rd = self.get_register_description(identifier)
             if channels is None:
                 ch = range(rd.nch)
