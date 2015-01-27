@@ -8,5 +8,5 @@ setup(name='HKEBinary',
       author='Justin Lazear',
       author_email='jlazear@gmail.com',
       url='http://www.github.com/jlazear/hkebinary',
-      py_modules=['HKEBinaryLibrary', 'HKEBinaryFile']
+      py_modules=['HKEBinaryLibrary', 'HKEBinaryFile', 'to_csv']
     )
