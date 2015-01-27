@@ -563,10 +563,12 @@ class Data(object):
         self.filename = header.filename
         self.header = header
         f = open(self.filename, 'rb')
-        f.seek(self.header.endpos/8)
+        # This is a HUGE hack. Should really do this in RegFrameDesc...
+        self.header.rawheader = f.read(self.header.endpos/8)
+        # f.seek(self.header.endpos/8)
 
-        dt = self.dtype_from_rfd(self.header)
-        self.data = fromfile(f, dt)
+        self.dt = self.dtype_from_rfd(self.header)
+        self.data = fromfile(f, self.dt)
 
     def dtype_from_rfd(self, rfd):
         dta = [('magic', 'S1'), ('framecount', 'u4'),

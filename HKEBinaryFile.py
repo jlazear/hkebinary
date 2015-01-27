@@ -14,6 +14,8 @@ jlazear@pha.jhu.edu
 June 25, 2012
 """
 
+import os
+
 from HKEBinaryLibrary import HKEBinaryReader, Header, Data, \
                              HKEBinaryError, HKEInvalidRegisterError
 from numpy import *
@@ -35,9 +37,12 @@ class HKEBinaryFile:
     """
     def __init__(self, filename):
         self.filename = filename
+        self.filesize = os.path.getsize(self.filename)
         self.reader = HKEBinaryReader(filename=self.filename)
         self.header = Header(self.reader)
         self.data = Data(self.header)
+        self.dtsize = self.data.dt.itemsize
+        self.datanum = (self.filesize - (self.header.length-1)/8)/self.dtsize
         self._make_board_list()
         self._make_register_list()
 
@@ -266,3 +271,18 @@ data. Extracting raw data.".format(rname=rd.fullname)
         columns = len(sarray.dtype.names)
         a = sarray.view().reshape(-1, columns)
         return a
+
+    def split_file(self, newfname, start=0, end=-1):
+        """
+        Saves a subset of an hkebinary file to `newfname`.
+
+        The full file header is always saved.
+
+        Saves data from frame `start` to frame `end`, not including the
+        endpoint, i.e. saves self.data.data[start:end].
+        """
+        start = int(start)
+        end = int(end)
+        with open(newfname, 'wb') as f:
+            f.write(self.header.rawheader)
+            self.data.data[start:end].tofile(f)
